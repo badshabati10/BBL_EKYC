@@ -1,0 +1,61 @@
+admin
+admin1234
+
+1. Pull image
+docker pull --platform linux/amd64 redmine:latest
+
+2. start container
+docker run -d -p 3000:3000 --name redmine --platform linux/amd64 redmine:latest
+
+Databse configure:
+
+3. Network create
+
+docker network create redmine-network
+
+4. mysql image
+
+docker pull mysql:8.0
+ 
+5. Run MySQL Container for windows powershell
+
+docker run -d `
+  --name redmine-mysql `
+  --network redmine-network `
+  -e MYSQL_ROOT_PASSWORD=123 `
+  -e MYSQL_DATABASE=redmine_db `
+  -e MYSQL_USER=badsha `
+  -e MYSQL_PASSWORD=456 `
+  -p 3306:3306 `
+  mysql:8.0
+
+      for Linux
+
+ docker run -d \
+  --name redmine-mysql \
+  --network redmine-network \
+  -e MYSQL_ROOT_PASSWORD=123 \
+  -e MYSQL_DATABASE=redmine_db \
+  -e MYSQL_USER=badsha \
+  -e MYSQL_PASSWORD=456 \
+  -p 3306:3306 \
+  mysql:8.0
+
+6. Access MySQL Inside the Container
+
+docker exec -it redmine-mysql mysql -u root -p
+
+7. Once inside MySQL, verify the database and user:
+
+SHOW DATABASES;
+SELECT User, Host FROM mysql.user;
+
+---------Resart Redmine from docker -----------------------
+
+docker start redmine
+docker start redmine-mysql
+
+
+
+
+
